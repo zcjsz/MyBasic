@@ -9,6 +9,7 @@ class App extends Component {
       {name: "ABC", age: 1},
       {name: "BCD", age: 2},
       {name: "CDE", age: 3},
+      {name: "DEF", age: 4},
     ],
     showPersons: false
   };
@@ -52,16 +53,24 @@ class App extends Component {
     })
   };
 
-  personsHandler = () => {
+  showPersonHandler = () => {
     let personsFlag = this.state.showPersons;
     this.setState({
       showPersons: !personsFlag
     })
   };
 
+  deletePersonHandler = (idx) => {
+    const persons = this.state.persons;
+    persons.splice(idx, 1);
+    this.setState({
+      persons: persons
+    })
+  };
+
 
   render() {
-    const style = {
+    const styleBtn = {
       backgroundColor: 'white',
       font: 'inherit',
       border: '1px solid blue',
@@ -74,8 +83,14 @@ class App extends Component {
       persons = (
         <div>
           {
-            this.state.persons.map((person, idx) => {
-              return <Person key={idx} id={idx} name={person.name} age={person.age} />
+            this.state.persons.map((person, key) => {
+              return <Person
+                      key={key}
+                      id={key}
+                      name={person.name}
+                      age={person.age}
+                      myclick={(key) => this.deletePersonHandler(key)}
+              />
             })
           }
           {/*<Person id="p1" name={this.state.persons[0].name} age={this.state.persons[0].age} nameChange={this.nameChange} />*/}
@@ -90,7 +105,7 @@ class App extends Component {
         <header className="App-header">
           {/*<button style={style} onClick={this.resetState}>Reset State</button>*/}
           {/*<button style={style} onClick={this.changeAge}>Change Age</button>*/}
-          <button style={style} onClick={this.personsHandler}>Show Persons</button>
+          <button style={styleBtn} onClick={this.showPersonHandler}>Show Persons</button>
           {persons}
         </header>
       </div>
