@@ -1,18 +1,32 @@
 import React, { Component } from 'react';
 import './App.css';
-// import Person from '../components/Persons/Person/Person';
+import Headers from '../components/Headers/Headers';
+import Buttons from '../components/Buttons/Buttons';
 import Persons from '../components/Persons/Persons';
 
 class App extends Component {
 
+  constructor(props) {
+    super(props);
+    this.props = props;
+  }
+
   state = {
+    showPersons: false,
     persons: [
       {id:1, name: "ABC", age: 1},
       {id:2, name: "BCD", age: 2},
       {id:3, name: "CDE", age: 3},
       {id:4, name: "DEF", age: 4},
     ],
-    showPersons: false
+    styleBtn: {
+      backgroundColor: 'green',
+      color: 'white',
+      font: 'inherit',
+      border: '1px solid blue',
+      padding: '8px',
+      cursor: 'pointer'
+    }
   };
 
   resetState = () => {
@@ -22,7 +36,7 @@ class App extends Component {
         {id:2, name: "BCD", age: 2},
         {id:3, name: "CDE", age: 3},
         {id:4, name: "DEF", age: 4},
-      ]
+      ],
     })
   };
 
@@ -48,11 +62,32 @@ class App extends Component {
     })
   };
 
-  showPersonHandler = () => {
-    let personsFlag = this.state.showPersons;
+  showPersonsHandler = () => {
+    let showPersons = !this.state.showPersons;
+    let styleBtn = {};
+    if(showPersons) {
+      styleBtn = {
+        backgroundColor: 'red',
+        color: 'white',
+        font: 'inherit',
+        border: '1px solid blue',
+        padding: '8px',
+        cursor: 'pointer'
+      }
+    } else {
+      styleBtn = {
+        backgroundColor: 'green',
+        color: 'white',
+        font: 'inherit',
+        border: '1px solid blue',
+        padding: '8px',
+        cursor: 'pointer'
+      }
+    }
     this.setState({
-      showPersons: !personsFlag
-    })
+      showPersons: showPersons,
+      styleBtn: styleBtn,
+    });
   };
 
   deletePersonHandler = (idx) => {
@@ -65,59 +100,31 @@ class App extends Component {
 
 
   render() {
-    const styleBtn = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    };
-
-    let persons = null;
+    let styleShowPerson = 'none';
     if(this.state.showPersons) {
-      // persons = (
-      //   <div>
-      //     {
-      //       this.state.persons.map((person, key) => {
-      //         return <Person
-      //           key={key}
-      //           name={person.name}
-      //           age={person.age}
-      //           myclick={() => this.deletePersonHandler(key)}
-      //           nameChange={(event) => this.nameChange(event, person.id)}
-      //         />
-      //       })
-      //     }
-      //   </div>
-      // );
-      styleBtn.backgroundColor = 'red';
-    } else {
-      styleBtn.backgroundColor = 'green';
-    }
-
-    let dyClass = [];
-    switch(this.state.persons.length) {
-      case 1: {dyClass.push('red');      break;}
-      case 2: {dyClass.push('bold');     break;}
-      case 3: {dyClass.push('red bold'); break;}
-      case 4: {dyClass.push('bold'); break;}
-      default: break;
+      styleShowPerson = 'block';
     }
 
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Hello World!</h1>
-          <p className={dyClass}>Hi React</p>
-          <button style={styleBtn} onClick={this.resetState}>Reset State</button>
-          <button style={styleBtn} onClick={this.changeAge}>Change Age</button>
-          <button style={styleBtn} onClick={this.showPersonHandler}>Show Persons</button>
-          <Persons
-            persons={this.state.persons}
-            clicked={this.deletePersonHandler}
-            changed={this.nameChange}
+          <Headers appTitle={this.props.title} personCnt={this.state.persons.length} />
+          <Buttons
+            styleBtn={this.state.styleBtn}
+            showPersonsHandler={this.showPersonsHandler}
+            resetState={this.resetState}
+            changeAge={this.changeAge}
           />
+          {/*<button style={styleBtn} onClick={this.resetState}>Reset State</button>*/}
+          {/*<button style={styleBtn} onClick={this.changeAge}>Change Age</button>*/}
+          {/*<button style={styleBtn} onClick={this.showPersonHandler}>Show Persons</button>*/}
+          <div style={{display: styleShowPerson}}>
+            <Persons
+              persons={this.state.persons}
+              clicked={this.deletePersonHandler}
+              changed={this.nameChange}
+            />
+          </div>
         </header>
       </div>
     );
