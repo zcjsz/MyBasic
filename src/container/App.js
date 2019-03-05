@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import Person from '../components/Person/Person';
+// import Person from '../components/Persons/Person/Person';
+import Persons from '../components/Persons/Persons';
 
 class App extends Component {
 
@@ -29,7 +30,8 @@ class App extends Component {
     let persons = [...this.state.persons];
     persons.map((person, key) => {
       person.age += 1;
-    })
+      return null;
+    });
     this.setState({
       persons: persons
     });
@@ -74,21 +76,21 @@ class App extends Component {
 
     let persons = null;
     if(this.state.showPersons) {
-      persons = (
-        <div>
-          {
-            this.state.persons.map((person, key) => {
-              return <Person
-                key={key}
-                name={person.name}
-                age={person.age}
-                myclick={() => this.deletePersonHandler(key)}
-                nameChange={(event) => this.nameChange(event, person.id)}
-              />
-            })
-          }
-        </div>
-      );
+      // persons = (
+      //   <div>
+      //     {
+      //       this.state.persons.map((person, key) => {
+      //         return <Person
+      //           key={key}
+      //           name={person.name}
+      //           age={person.age}
+      //           myclick={() => this.deletePersonHandler(key)}
+      //           nameChange={(event) => this.nameChange(event, person.id)}
+      //         />
+      //       })
+      //     }
+      //   </div>
+      // );
       styleBtn.backgroundColor = 'red';
     } else {
       styleBtn.backgroundColor = 'green';
@@ -111,7 +113,11 @@ class App extends Component {
           <button style={styleBtn} onClick={this.resetState}>Reset State</button>
           <button style={styleBtn} onClick={this.changeAge}>Change Age</button>
           <button style={styleBtn} onClick={this.showPersonHandler}>Show Persons</button>
-          {persons}
+          <Persons
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChange}
+          />
         </header>
       </div>
     );
