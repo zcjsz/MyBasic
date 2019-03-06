@@ -7,27 +7,35 @@ import Persons from '../components/Persons/Persons';
 class App extends Component {
 
   constructor(props) {
+    console.log('====== [App.js] constructor ======');
     super(props);
     this.props = props;
+    this.state = {
+      showPersons: false,
+      persons: [
+        {id:1, name: "ABC", age: 1},
+        {id:2, name: "BCD", age: 2},
+        {id:3, name: "CDE", age: 3},
+        {id:4, name: "DEF", age: 4},
+      ],
+      styleBtn: {
+        backgroundColor: 'green',
+        color: 'white',
+        font: 'inherit',
+        border: '1px solid blue',
+        padding: '8px',
+        cursor: 'pointer'
+      }
+    };
   }
 
-  state = {
-    showPersons: false,
-    persons: [
-      {id:1, name: "ABC", age: 1},
-      {id:2, name: "BCD", age: 2},
-      {id:3, name: "CDE", age: 3},
-      {id:4, name: "DEF", age: 4},
-    ],
-    styleBtn: {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
-    }
-  };
+  componentWillMount() {
+    console.log('====== [App.js] componentWillMount ======');
+  }
+
+  componentDidMount() {
+    console.log('====== [App.js] componentDidMount ======');
+  }
 
   resetState = () => {
     this.setState({
@@ -100,9 +108,21 @@ class App extends Component {
 
 
   render() {
-    let styleShowPerson = 'none';
+
+    console.log('====== [App.js] render ======');
+
+    // let styleShowPerson = 'none';
+    // if(this.state.showPersons) {
+    //   styleShowPerson = 'block';
+    // }
+
+    let persons = null;
     if(this.state.showPersons) {
-      styleShowPerson = 'block';
+      persons = <Persons
+                  persons={this.state.persons}
+                  clicked={this.deletePersonHandler}
+                  changed={this.nameChange}
+                />
     }
 
     return (
@@ -115,9 +135,10 @@ class App extends Component {
             resetState={this.resetState}
             changeAge={this.changeAge}
           />
-          {/*<button style={styleBtn} onClick={this.resetState}>Reset State</button>*/}
-          {/*<button style={styleBtn} onClick={this.changeAge}>Change Age</button>*/}
-          {/*<button style={styleBtn} onClick={this.showPersonHandler}>Show Persons</button>*/}
+          {/*
+          <button style={styleBtn} onClick={this.resetState}>Reset State</button>
+          <button style={styleBtn} onClick={this.changeAge}>Change Age</button>
+          <button style={styleBtn} onClick={this.showPersonHandler}>Show Persons</button>
           <div style={{display: styleShowPerson}}>
             <Persons
               persons={this.state.persons}
@@ -125,6 +146,8 @@ class App extends Component {
               changed={this.nameChange}
             />
           </div>
+          */}
+          {persons}
         </header>
       </div>
     );
